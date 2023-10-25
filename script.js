@@ -1,5 +1,5 @@
 let socket = io();
-var sizee=50;
+var sizee = 40;
 
 function setup() {
   frameRate(5)
@@ -7,7 +7,7 @@ function setup() {
   background('#acacac')
 }
 
-var side=900/sizee;
+var side = 900 / sizee;
 
 function drawGame(matrix) {
   for (var y = 0; y < matrix.length; y++) {
@@ -15,35 +15,35 @@ function drawGame(matrix) {
       if (matrix[y][x] == 1) {
         fill("green")
         rect(x * side, y * side, side, side)
-      } 
+      }
       else if (matrix[y][x] == 0) {
         fill("#acacac")
         rect(x * side, y * side, side, side)
-      } 
+      }
       else if (matrix[y][x] == 2) {
         fill("red")
         rect(x * side, y * side, side, side)
-      } 
+      }
       else if (matrix[y][x] == 3) {
         fill("cyan")
         rect(x * side, y * side, side, side)
-      } 
+      }
       else if (matrix[y][x] == 4) {
         fill("yellow")
         rect(x * side, y * side, side, side)
-      } 
+      }
       else if (matrix[y][x] == 5) {
         fill("#4f0341")
         rect(x * side, y * side, side, side)
-      } 
+      }
       else if (matrix[y][x] == 6) {
         fill("#a68b4c")
         rect(x * side, y * side, side, side)
-      } 
+      }
       else if (matrix[y][x] == 7) {
         fill("black")
         rect(x * side, y * side, side, side)
-      } 
+      }
       else if (matrix[y][x] == 8) {
         fill("coral")
         rect(x * side, y * side, side, side)
@@ -56,4 +56,15 @@ function drawGame(matrix) {
   }
 }
 
+var grassStat = document.getElementById("grassCount");
+
 socket.on("matrix", drawGame)
+socket.on("grassCount", (grassCount) => {
+  grassStat.innerText = "Grasses spawned: " + grassCount;
+})
+
+/*var explode = document.getElementById("explode");
+explode.addEventListener("click",
+  function(){
+      socket.emit("explode", 1);
+  });*/

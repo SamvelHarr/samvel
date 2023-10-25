@@ -13,6 +13,7 @@ server.listen(3000, function () {
   console.log("App is running on port 3000");
 });
 
+const explode=require("./event")
 const random = require("./random")
 const Grass = require("./grass")
 const GrassEater = require("./grassEater")
@@ -22,7 +23,8 @@ const Snake = require("./snake")
 const Spawner = require("./spawner")
 const Virus = require("./virus")
 
-sizee = 50
+sizee = 40
+grassCount = 0
 side = 900 / sizee
 grassArr = []
 grassEaterArr = []
@@ -34,55 +36,54 @@ spawnerCount = 2
 snake = null
 matrix = []
 
-function matrixGenerator(size, size, countGrass, countGrassEater, countGrassSaver, countPredator, countVirus, countSpawner) {
-  console.log(countSpawner);
-  for (var i = 0; i < size; i++) {
+function matrixGenerator(size, countGrass, countGrassEater, countGrassSaver, countPredator, countVirus, countSpawner) {
+  for (let i = 0; i < size; i++) {
     matrix.push([])
-    for (var j = 0; j < size; j++) {
+    for (let j = 0; j < size; j++) {
       matrix[i].push(0)
     }
   }
   for (var k = 0; k < countGrass; k++) {
-    var x = Math.floor(random(size))
-    var y = Math.floor(random(size))
+    var x = random(size)
+    var y = random(size)
     matrix[y][x] = 1
   }
   for (var k = 0; k < countGrassEater; k++) {
-    var x = Math.floor(random(size))
-    var y = Math.floor(random(size))
+    var x = random(size)
+    var y = random(size)
     matrix[y][x] = 2
   }
   for (var k = 0; k < countGrassSaver; k++) {
-    var x = Math.floor(random(size))
-    var y = Math.floor(random(size))
+    var x = random(size)
+    var y = random(size)
     matrix[y][x] = 3
   }
   for (var k = 0; k < countPredator; k++) {
-    var x = Math.floor(random(size))
-    var y = Math.floor(random(size))
+    var x = random(size)
+    var y = random(size)
     matrix[y][x] = 4
   }
   for (var k = 0; k < countVirus; k++) {
-    var x = Math.floor(random(size))
-    var y = Math.floor(random(size))
+    var x = random(size)
+    var y = random(size)
     matrix[y][x] = 5
   }
   for (var k = 0; k < countSpawner; k++) {
-    var x = Math.floor(random(size))
-    var y = Math.floor(random(size))
+    var x = random(size)
+    var y = random(size)
     matrix[y][x] = 7
   }
-  console.log(matrix);
 }
 
 function createGame() {
-  matrixGenerator(sizee, sizee, sizee / 8, sizee / 8, sizee / 8, sizee / 8, sizee / 32, spawnerCount)
+  matrixGenerator(sizee, sizee / 4, sizee / 8, sizee / 8, sizee / 8, sizee / 32, spawnerCount)
   snake = new Snake(Math.floor(sizee / 4), 0)
-  for (var y = 0; y < matrix.length; y++) {
-    for (var x = 0; x < matrix[y].length; x++) {
+  for (var y = 0; y < matrix.length; ++y) {
+    for (var x = 0; x < matrix[y].length; ++x) {
       if (matrix[y][x] === 1) {
         var grass = new Grass(x, y)
         grassArr.push(grass)
+        grassCount++
       } else if (matrix[y][x] === 2) {
         var grassEater = new GrassEater(x, y)
         grassEaterArr.push(grassEater)
@@ -102,7 +103,7 @@ function createGame() {
     }
   }
 }
-counter = 0
+//counter = 0
 function drawGame() {
   for (var i = 0; i < grassArr.length; i++) {
     grassArr[i].mul()
@@ -122,13 +123,15 @@ function drawGame() {
   for (var i = 0; i < spawnerArr.length; i++) {
     spawnerArr[i].spawn()
   }
-  if(snake!=0){
+  if(snake){
     snake.generate()
   }
-  io.emit("matrix", matrix)
+  io.emit("matrix", matrix);
+  io.emit("grassCount", grassCount);
   //counter++
   //console.log(counter);
-  
+  //explode(random(sizee), random(sizee));
+  //explode(-1, -1);
 }
 
 createGame()
@@ -137,7 +140,6 @@ let intervalID;
 
 function startGame() {
   clearInterval(intervalID)
-  createGame()
   intervalID = setInterval(() => {
     drawGame()
   }, 100)
@@ -146,4 +148,11 @@ function startGame() {
 io.on("connection", (socket) => {
   socket.emit("matrix", matrix)
   startGame()
+
+/*  socket.on("explode", (a) => {
+    if(a==1){
+      explode(random(sizee), random(sizee));
+    }
+  })*/
 })
+

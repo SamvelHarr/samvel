@@ -3,9 +3,10 @@ const random = require("./random");
 
 module.exports = class GrassSaver extends LivingCreature {
   constructor(x, y) {
-    super(x, y)
-    this.energy = Math.floor(sizee/2.5)
-    this.directions = []
+    super(x, y);
+    this.energy = Math.floor(sizee / 2.5);
+    this.directions = [];
+    this.breedable=random(5);
   }
 
   getNewCoordinates() {
@@ -42,12 +43,14 @@ module.exports = class GrassSaver extends LivingCreature {
   }
 
   mul() {
-    if (this.energy >= 40) {
-      var newCell = random(this.chooseCell(0))
-      if (newCell) {
-        var newGrassSaver = new GrassSaver(newCell[0], newCell[1])
-        grassSaverArr.push(newGrassSaver)
-        matrix[newCell[1]][newCell[0]] = 3
+    if (this.breedable) {
+      if (this.energy >= 40) {
+        var newCell = random(this.chooseCell(0))
+        if (newCell) {
+          var newGrassSaver = new GrassSaver(newCell[0], newCell[1])
+          grassSaverArr.push(newGrassSaver)
+          matrix[newCell[1]][newCell[0]] = 3
+        }
       }
     }
   }
@@ -67,7 +70,7 @@ module.exports = class GrassSaver extends LivingCreature {
     var cells = this.chooseCell(2)
     var oneCell = random(cells)
     if (oneCell) {
-      this.energy+=3
+      this.energy += 3
       var oneCellX = oneCell[0]
       var oneCellY = oneCell[1]
       matrix[oneCellY][oneCellX] = 3

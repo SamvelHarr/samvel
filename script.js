@@ -8,12 +8,13 @@ function setup() {
 }
 
 var side = 900 / sizee;
+var grassColor="green";
 
 function drawGame(matrix) {
   for (var y = 0; y < matrix.length; y++) {
     for (var x = 0; x < matrix[y].length; x++) {
       if (matrix[y][x] == 1) {
-        fill("green")
+        fill(grassColor)
         rect(x * side, y * side, side, side)
       }
       else if (matrix[y][x] == 0) {
@@ -59,12 +60,37 @@ function drawGame(matrix) {
 var grassStat = document.getElementById("grassCount");
 
 socket.on("matrix", drawGame)
-socket.on("grassCount", (grassCount) => {
+
+/*socket.on("grassCount", (grassCount) => {
   grassStat.innerText = "Grasses spawned: " + grassCount;
-})
+})*/
+
+/*socket.on("season", (season) => {
+  if(season==1){
+    grassColor="#01611b";
+  }
+  else{
+    grassColor="green";
+  }
+})*/
+
+/*
+document.getElementById("explode").addEventListener("click", function() {
+  var xCoordinate = document.getElementById("x-coordinate").value;
+  var yCoordinate = document.getElementById("y-coordinate").value;
+
+  var data = {
+      x: xCoordinate,
+      y: yCoordinate
+  };
+O
+  socket.emit('coordinates', data);
+});
+*/
 
 /*var explode = document.getElementById("explode");
 explode.addEventListener("click",
   function(){
       socket.emit("explode", 1);
   });*/
+

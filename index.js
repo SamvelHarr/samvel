@@ -13,7 +13,8 @@ server.listen(3000, function () {
   console.log("App is running on port 3000");
 });
 
-const explode=require("./event")
+const explode = require("./event")
+const explodeM = require("./tevent")
 const random = require("./random")
 const Grass = require("./grass")
 const GrassEater = require("./grassEater")
@@ -35,6 +36,19 @@ grassSaverArr = []
 spawnerCount = 2
 snake = null
 matrix = []
+season = 0
+time = 100
+
+var explodeMatrix = [
+  [1, 0, 1, 0],
+  [1, 0, 1, 1],
+  [0, 1, 0, 1],
+  [0, 0, 1, 0]
+];
+
+function nextSeason(cur) {
+  return Math.abs(cur - 1);
+}
 
 function matrixGenerator(size, countGrass, countGrassEater, countGrassSaver, countPredator, countVirus, countSpawner) {
   for (let i = 0; i < size; i++) {
@@ -103,6 +117,8 @@ function createGame() {
     }
   }
 }
+
+var t = 0
 //counter = 0
 function drawGame() {
   for (var i = 0; i < grassArr.length; i++) {
@@ -123,14 +139,33 @@ function drawGame() {
   for (var i = 0; i < spawnerArr.length; i++) {
     spawnerArr[i].spawn()
   }
-  if(snake){
+  if (snake) {
     snake.generate()
   }
+  if (t == 0) {
+    t = 1;
+    setTimeout(() => {
+      season = nextSeason(season);
+      if (season == 1) {
+        time = 500;
+      }
+      else {
+        time = 100;
+      }
+      t = 0;
+      //console.log(season, time);
+    }, 10000)
+  }
   io.emit("matrix", matrix);
-  io.emit("grassCount", grassCount);
+  //io.emit("grassCount", grassCount);
+  //io.emit("season", season)
+ /* var l = 1;
+  if (l) {
+    explodeM(10, 10, explodeMatrix);
+    l = 0;
+  }*/
   //counter++
   //console.log(counter);
-  //explode(random(sizee), random(sizee));
   //explode(-1, -1);
 }
 
@@ -142,17 +177,24 @@ function startGame() {
   clearInterval(intervalID)
   intervalID = setInterval(() => {
     drawGame()
-  }, 100)
+  }, time)
 }
 
 io.on("connection", (socket) => {
   socket.emit("matrix", matrix)
   startGame()
 
-/*  socket.on("explode", (a) => {
-    if(a==1){
-      explode(random(sizee), random(sizee));
-    }
-  })*/
+  /*  socket.on("explode", (a) => {
+      if(a==1){
+        explode(random(sizee), random(sizee));
+      }
+    })*/
 })
+
+/*io.on('connection', (socket) => {
+  socket.on('coordinates', (data) => {
+    explode(data.x, data.y);
+    console.log('Received coordinates: X:', data.x, ' Y:', data.y);
+  });
+});*/
 

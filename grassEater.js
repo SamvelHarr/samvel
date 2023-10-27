@@ -3,9 +3,10 @@ const random = require("./random")
 
 module.exports = class GrassEater extends LivingCreature {
     constructor(x, y) {
-        super(x, y)
-        this.energy = Math.floor(sizee/2.5)
-        this.directions = []
+        super(x, y);
+        this.energy = Math.floor(sizee / 2.5);
+        this.directions = [];
+        this.breedable=random(5);
     }
 
     getNewCoordinates() {
@@ -42,12 +43,14 @@ module.exports = class GrassEater extends LivingCreature {
     }
 
     mul() {
-        if (this.energy >= 35) {
-            var newCell = random(this.chooseCell(0))
-            if (newCell) {
-                var newGrassEater = new GrassEater(newCell[0], newCell[1])
-                grassEaterArr.push(newGrassEater)
-                matrix[newCell[1]][newCell[0]] = 2
+        if (this.breedable) {
+            if (this.energy >= 35) {
+                var newCell = random(this.chooseCell(0))
+                if (newCell) {
+                    var newGrassEater = new GrassEater(newCell[0], newCell[1])
+                    grassEaterArr.push(newGrassEater)
+                    matrix[newCell[1]][newCell[0]] = 2
+                }
             }
         }
     }
@@ -67,7 +70,7 @@ module.exports = class GrassEater extends LivingCreature {
         var grasses = this.chooseCell(1)
         var oneGrass = random(grasses)
         if (oneGrass) {
-            this.energy+=3
+            this.energy += 3
             var oneGrassX = oneGrass[0]
             var oneGrassY = oneGrass[1]
             matrix[oneGrassY][oneGrassX] = 2
@@ -84,7 +87,7 @@ module.exports = class GrassEater extends LivingCreature {
         else {
             this.move()
         }
-        if (this.energy >= 35 && grassEaterArr.length<sizee*sizee/3) {
+        if (this.energy >= 35 && grassEaterArr.length < sizee * sizee / 3) {
             this.mul()
         }
     }

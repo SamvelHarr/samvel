@@ -50,6 +50,7 @@ module.exports = class GrassSaver extends LivingCreature {
           var newGrassSaver = new GrassSaver(newCell[0], newCell[1])
           grassSaverArr.push(newGrassSaver)
           matrix[newCell[1]][newCell[0]] = 3
+          stats.grassSaverCount++
         }
       }
     }
@@ -60,6 +61,7 @@ module.exports = class GrassSaver extends LivingCreature {
       if (this.x == grassSaverArr[i].x && this.y == grassSaverArr[i].y) {
         grassSaverArr.splice(i, 1)
         matrix[this.y][this.x] = 0
+        stats.grassSaverCount--
         break
       }
     }
@@ -80,6 +82,7 @@ module.exports = class GrassSaver extends LivingCreature {
       for (var i in grassEaterArr) {
         if (oneCellX == grassEaterArr[i].x && oneCellY == grassEaterArr[i].y) {
           grassEaterArr.splice(i, 1)
+          stats.grassEaterCount--
           break
         }
       }

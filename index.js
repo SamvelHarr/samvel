@@ -24,20 +24,29 @@ const Snake = require("./snake")
 const Spawner = require("./spawner")
 const Virus = require("./virus")
 
-sizee = 40
-grassCount = 0
-side = 900 / sizee
-grassArr = []
-grassEaterArr = []
-virusArr = []
-predatorArr = []
-spawnerArr = []
-grassSaverArr = []
-spawnerCount = 2
-snake = null
-matrix = []
-season = 0
-time = 100
+sizee = 40;
+side = 900 / sizee;
+grassArr = [];
+grassEaterArr = [];
+virusArr = [];
+predatorArr = [];
+spawnerArr = [];
+grassSaverArr = [];
+spawnerCount = 2;
+snake = null;
+matrix = [];
+season = 0;
+time = 100;
+
+stats = {
+  grassCount: 0,
+  grassEaterCount: 0,
+  grassSaverCount: 0,
+  predatorCount: 0,
+  infectedCount: 0,
+  spawnedCount: 0,
+  explodedCount: 0
+};
 
 var explodeMatrix = [
   [1, 0, 1, 0],
@@ -97,16 +106,19 @@ function createGame() {
       if (matrix[y][x] === 1) {
         var grass = new Grass(x, y)
         grassArr.push(grass)
-        grassCount++
+        stats.grassCount++
       } else if (matrix[y][x] === 2) {
         var grassEater = new GrassEater(x, y)
         grassEaterArr.push(grassEater)
+        stats.grassEaterCount++
       } else if (matrix[y][x] === 3) {
         var grassSaver = new GrassSaver(x, y)
         grassSaverArr.push(grassSaver)
+        stats.grassSaverCount++
       } else if (matrix[y][x] === 4) {
         var predator = new Predator(x, y)
         predatorArr.push(predator)
+        stats.predatorCount++
       } else if (matrix[y][x] === 5) {
         var virus = new Virus(x, y)
         virusArr.push(virus)
@@ -159,14 +171,17 @@ function drawGame() {
   io.emit("matrix", matrix);
   //io.emit("grassCount", grassCount);
   //io.emit("season", season)
- /* var l = 1;
-  if (l) {
+  var l = 1;
+  /*if (l!=0) {
+    setTimeout(()=> {
     explodeM(10, 10, explodeMatrix);
     l = 0;
+    },5000);
   }*/
   //counter++
   //console.log(counter);
   //explode(-1, -1);
+  console.log(stats.grassCount + " " + stats.grassEaterCount + " " + stats.grassSaverCount + " " + stats.predatorCount + " " + stats.infectedCount + " " + stats.spawnedCount);
 }
 
 createGame()

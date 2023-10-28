@@ -64,6 +64,7 @@ module.exports = class Predator extends LivingCreature {
             if (this.x == predatorArr[i].x && this.y == predatorArr[i].y) {
                 predatorArr.splice(i, 1)
                 matrix[this.y][this.x] = 0
+                stats.predatorCount--
                 break
             }
         }
@@ -84,18 +85,21 @@ module.exports = class Predator extends LivingCreature {
             for (var i in grassArr) {
                 if (oneCellX == grassArr[i].x && oneCellY == grassArr[i].y) {
                     grassArr.splice(i, 1)
+                    stats.grassCount--
                     break
                 }
             }
             for (var i in grassEaterArr) {
                 if (oneCellX == grassEaterArr[i].x && oneCellY == grassEaterArr[i].y) {
                     grassEaterArr.splice(i, 1)
+                    stats.grassEaterCount
                     break
                 }
             }
             for (var i in grassSaverArr) {
                 if (oneCellX == grassSaverArr[i].x && oneCellY == grassSaverArr[i].y) {
                     grassSaverArr.splice(i, 1)
+                    stats.grassSaverCount--
                     break
                 }
             }

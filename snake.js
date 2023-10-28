@@ -74,24 +74,28 @@ module.exports = class Snake {
             for (var j in grassArr) {
                 if (this.snake[i][0] == grassArr[j].x && this.snake[i][1] == grassArr[j].y) {
                     grassArr.splice(j, 1)
+                    stats.grassCount--
                     break
                 }
             }
             for (var j in grassEaterArr) {
                 if (this.snake[i][0] == grassEaterArr[j].x && this.snake[i][1] == grassEaterArr[j].y) {
                     grassEaterArr.splice(j, 1)
+                    stats.grassEaterCount--
                     break
                 }
             }
             for (var j in grassSaverArr) {
-                if (this.snake[i][0] == grassArr[j].x && this.snake[i][1] == grassArr[j].y) {
+                if (this.snake[i][0] == grassSaverArr[j].x && this.snake[i][1] == grassSaverArr[j].y) {
                     grassSaverArr.splice(j, 1)
+                    stats.grassSaverCount--
                     break
                 }
             }
             for (var j in predatorArr) {
-                if (this.snake[i][0] == grassEaterArr[j].x && this.snake[i][1] == grassEaterArr[j].y) {
+                if (this.snake[i][0] == predatorArr[j].x && this.snake[i][1] == predatorArr[j].y) {
                     predatorArr.splice(j, 1)
+                    stats.predatorCount--
                     break
                 }
             }

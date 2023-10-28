@@ -27,7 +27,7 @@ module.exports = class Grass extends LivingCreature {
                 grassArr.push(newGrass);
                 matrix[newCell[1]][newCell[0]] = 1;
                 this.multiply = 0;
-                stats.grassCount++;
+                stats.allGrassCount++;
             }
         }
     }

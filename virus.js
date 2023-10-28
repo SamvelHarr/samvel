@@ -81,7 +81,7 @@ module.exports = class Virus {
                 if (oneCellX == grassArr[i].x && oneCellY == grassArr[i].y) {
                     grassArr.splice(i, 1);
                     stats.infectedCount++;
-                    stats.grassCount--;
+                    //stats.grassCount--;
                     break;
                 }
             }
@@ -89,7 +89,7 @@ module.exports = class Virus {
                 if (oneCellX == grassEaterArr[i].x && oneCellY == grassEaterArr[i].y) {
                     grassEaterArr.splice(i, 1);
                     stats.infectedCount++;
-                    stats.grassEaterCount--;
+                    //stats.grassEaterCount--;
                     break;
                 }
             }
@@ -97,7 +97,7 @@ module.exports = class Virus {
                 if (oneCellX == grassSaverArr[i].x && oneCellY == grassSaverArr[i].y) {
                     grassSaverArr.splice(i, 1);
                     stats.infectedCount++;
-                    stats.grassSaverCount--;
+                    //stats.grassSaverCount--;
                     break;
                 }
             }
@@ -105,7 +105,7 @@ module.exports = class Virus {
                 if (oneCellX == predatorArr[i].x && oneCellY == predatorArr[i].y) {
                     predatorArr.splice(i, 1);
                     stats.infectedCount++;
-                    stats.predatorCount--;
+                    //stats.predatorCount--;
                     break;
                 }
             }
@@ -126,28 +126,28 @@ module.exports = class Virus {
             for (var j in grassArr) {
                 if (cells[i][0] == grassArr[j].x && cells[i][1] == grassArr[j].y) {
                     grassArr.splice(j, 1)
-                    stats.grassCount--
+                    //stats.grassCount--
                     break
                 }
             }
             for (var j in grassEaterArr) {
                 if (cells[i][0] == grassEaterArr[j].x && cells[i][1] == grassEaterArr[j].y) {
                     grassEaterArr.splice(j, 1)
-                    stats.grassEaterCount--
+                    //stats.grassEaterCount--
                     break
                 }
             }
             for (var j in grassSaverArr) {
                 if (cells[i][0] == grassSaverArr[j].x && cells[i][1] == grassSaverArr[j].y) {
                     grassSaverArr.splice(j, 1)
-                    stats.grassSaverCount--
+                    //stats.grassSaverCount--
                     break
                 }
             }
             for (var j in predatorArr) {
                 if (cells[i][0] == predatorArr[j].x && cells[i][1] == predatorArr[j].y) {
                     predatorArr.splice(j, 1)
-                    stats.predatorCount--
+                    //stats.predatorCount--
                     break
                 }
             }

@@ -8,7 +8,7 @@ function setup() {
 }
 
 var side = 900 / sizee;
-var grassColor="green";
+var grassColor = "green";
 
 function drawGame(matrix) {
   for (var y = 0; y < matrix.length; y++) {
@@ -57,36 +57,42 @@ function drawGame(matrix) {
   }
 }
 
-var grassStat = document.getElementById("grassCount");
-
 socket.on("matrix", drawGame)
 
 /*socket.on("grassCount", (grassCount) => {
   grassStat.innerText = "Grasses spawned: " + grassCount;
 })*/
 
-/*socket.on("season", (season) => {
-  if(season==1){
-    grassColor="#01611b";
+socket.on("season", (season) => {
+  if (season == 1) {
+    grassColor = "#c9fcc5";
   }
-  else{
-    grassColor="green";
+  else {
+    grassColor = "green";
   }
-})*/
+})
 
-/*
-document.getElementById("explode").addEventListener("click", function() {
+var liveStatsp = document.getElementById("liveStats");
+var statsp = document.getElementById("stats");
+
+socket.on("stats", (stats) => {
+  liveStatsp.innerText = "Grasses alive: " + stats.grassCount + "\n" + "GrassEaters alive: " + stats.grassEaterCount + "\n" + "GrassSavers alive: " + stats.grassSaverCount + "\n" + "Predators alive: " + stats.predatorCount + "\n";
+  statsp.innerText = "Total grass count: " + stats.allGrassCount + "\n" + "Bombs exploded: " + stats.explodedCount + "\n" + "Cells infected: " + stats.infectedCount + "\n" + "Characters spawned by spawners: " + stats.spawnedCount;
+})
+
+document.getElementById("explode").addEventListener("click", function () {
   var xCoordinate = document.getElementById("x-coordinate").value;
   var yCoordinate = document.getElementById("y-coordinate").value;
 
+  console.log("click");
+
   var data = {
-      x: xCoordinate,
-      y: yCoordinate
+    x: xCoordinate,
+    y: yCoordinate
   };
-O
   socket.emit('coordinates', data);
 });
-*/
+
 
 /*var explode = document.getElementById("explode");
 explode.addEventListener("click",

@@ -57,7 +57,7 @@ module.exports = class Spawner {
             predatorArr.push(newPredator);
             matrix[oneCell[1]][oneCell[0]] = 4;
             stats.spawnedCount++;
-            stats.predatorCount++;
+            //stats.predatorCount++;
         }
         else if (grassSaverArr.length <= spawnerCount + 1) {
             var oneCell = random(cells);
@@ -68,7 +68,7 @@ module.exports = class Spawner {
             grassSaverArr.push(newGrassSaver);
             matrix[oneCell[1]][oneCell[0]] = 3;
             stats.spawnedCount++;
-            stats.grassSaverCount++;
+            //stats.grassSaverCount++;
         }
         else if (grassEaterArr.length <= spawnerCount + 1) {
             var oneCell = random(cells);
@@ -79,7 +79,7 @@ module.exports = class Spawner {
             grassEaterArr.push(newGrassEater);
             matrix[oneCell[1]][oneCell[0]] = 2;
             stats.spawnedCount++;
-            stats.grassEaterCount++;
+            //stats.grassEaterCount++;
         }
     }
 }

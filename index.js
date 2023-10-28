@@ -14,7 +14,7 @@ server.listen(3000, function () {
 });
 
 const explode = require("./event")
-const explodeM = require("./tevent")
+//const explodeM = require("./tevent")
 const random = require("./random")
 const Grass = require("./grass")
 const GrassEater = require("./grassEater")
@@ -45,7 +45,8 @@ stats = {
   predatorCount: 0,
   infectedCount: 0,
   spawnedCount: 0,
-  explodedCount: 0
+  explodedCount: 0,
+  allGrassCount: 0
 };
 
 var explodeMatrix = [
@@ -106,19 +107,19 @@ function createGame() {
       if (matrix[y][x] === 1) {
         var grass = new Grass(x, y)
         grassArr.push(grass)
-        stats.grassCount++
+        stats.allGrassCount++
       } else if (matrix[y][x] === 2) {
         var grassEater = new GrassEater(x, y)
         grassEaterArr.push(grassEater)
-        stats.grassEaterCount++
+        //stats.grassEaterCount++
       } else if (matrix[y][x] === 3) {
         var grassSaver = new GrassSaver(x, y)
         grassSaverArr.push(grassSaver)
-        stats.grassSaverCount++
+        //stats.grassSaverCount++
       } else if (matrix[y][x] === 4) {
         var predator = new Predator(x, y)
         predatorArr.push(predator)
-        stats.predatorCount++
+        //stats.predatorCount++
       } else if (matrix[y][x] === 5) {
         var virus = new Virus(x, y)
         virusArr.push(virus)
@@ -154,23 +155,13 @@ function drawGame() {
   if (snake) {
     snake.generate()
   }
-  if (t == 0) {
-    t = 1;
-    setTimeout(() => {
-      season = nextSeason(season);
-      if (season == 1) {
-        time = 500;
-      }
-      else {
-        time = 100;
-      }
-      t = 0;
-      //console.log(season, time);
-    }, 10000)
-  }
   io.emit("matrix", matrix);
-  //io.emit("grassCount", grassCount);
-  //io.emit("season", season)
+  stats.grassCount = grassArr.length;
+  stats.grassEaterCount = grassEaterArr.length;
+  stats.grassSaverCount = grassSaverArr.length;
+  stats.predatorCount = predatorArr.length;
+  io.emit("stats", stats);
+  io.emit("season", season)
   var l = 1;
   /*if (l!=0) {
     setTimeout(()=> {
@@ -181,7 +172,7 @@ function drawGame() {
   //counter++
   //console.log(counter);
   //explode(-1, -1);
-  console.log(stats.grassCount + " " + stats.grassEaterCount + " " + stats.grassSaverCount + " " + stats.predatorCount + " " + stats.infectedCount + " " + stats.spawnedCount);
+  //console.log(stats.grassCount + " " + stats.grassEaterCount + " " + stats.grassSaverCount + " " + stats.predatorCount + " " + stats.infectedCount + " " + stats.spawnedCount);
 }
 
 createGame()
@@ -192,24 +183,29 @@ function startGame() {
   clearInterval(intervalID)
   intervalID = setInterval(() => {
     drawGame()
-  }, time)
+  }, 100)
 }
+
+
+setInterval(() => {
+  season = nextSeason(season);
+  if (season == 1) {
+    time = 500;
+  }
+  else {
+    time = 100;
+  }
+  //console.log(season, time);
+}, 20000)
 
 io.on("connection", (socket) => {
   socket.emit("matrix", matrix)
   startGame()
 
-  /*  socket.on("explode", (a) => {
-      if(a==1){
-        explode(random(sizee), random(sizee));
-      }
-    })*/
+  socket.on('coordinates', (data) => {
+    explode(parseInt(data.x), parseInt(data.y));
+    //console.log('Received coordinates: X:', data.x, ' Y:', data.y, data);
+  });
 })
 
-/*io.on('connection', (socket) => {
-  socket.on('coordinates', (data) => {
-    explode(data.x, data.y);
-    console.log('Received coordinates: X:', data.x, ' Y:', data.y);
-  });
-});*/
 
